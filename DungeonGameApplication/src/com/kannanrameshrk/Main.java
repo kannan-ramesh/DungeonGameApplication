@@ -1,6 +1,5 @@
 package com.kannanrameshrk;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -14,11 +13,14 @@ public class Main {
 		int col = input.nextInt();
 
 		main.startGame(row, col, input);
+		Pits pit=new Pits();
+		//pit.startGame(row,col,input);
 	}
 
 	private void startGame(int row, int col, Scanner input) {
 		char[][] arr = new char[row][col];
-
+		fillArray(arr);
+		
 		System.out.println("Position Of adventure:");
 		int adventRow = input.nextInt();
 		int adventCol = input.nextInt();
@@ -41,14 +43,29 @@ public class Main {
 
 		int adventstep = Math.abs(adventRow - goldRow) + Math.abs(adventCol - goldCol);
 		int monsterStep = Math.abs(monsterRow - goldRow) + Math.abs(monsterCol - goldCol);
-		int triggerStep=Math.abs(adventRow-triggerCol)+Math.abs(adventCol-goldCol);
+		int triggerStep=Math.abs(adventRow-triggerRow)+Math.abs(adventCol-triggerCol);
 		int triggerStepGold=Math.abs(triggerRow-goldRow)+Math.abs(triggerCol-goldCol);
-		System.out.println(Arrays.deepToString(arr));
-//		
-//		System.out.println("Min number of steps:"+adventstep);
-//		System.out.println("monster Step"+monsterStep);
+		
+		printArray(arr);
 
 		resultGame(adventstep, monsterStep,adventRow,adventCol, monsterRow, monsterCol,goldRow,goldCol,triggerRow,triggerCol,triggerStep,triggerStepGold);
+	}
+
+	private void fillArray(char[][] arr) {
+		for(int i=0;i<arr.length;i++) {
+			for(int j=0;j<arr[i].length;j++) {
+				arr[i][j]='#';
+			}
+		}
+	}
+
+	private void printArray(char[][] arr) {
+		for(int i=0;i<arr.length;i++) {
+			for(int j=0;j<arr[i].length;j++) {
+				System.out.print(arr[i][j]+" ");
+			}
+			System.out.println();
+		}
 	}
 
 	private void resultGame(int adventStep, int monsterStep, int adventRow, int adventCol, int monsterRow, int monsterCol, int goldRow, int goldCol, int triggerRow, int triggerCol, int triggerStep, int triggerStepGold) {
@@ -57,39 +74,35 @@ public class Main {
 			System.out.println("Minimum Step Of "+steps);
 		} else {
 			System.out.println("Minimum Number Of Steps:" + adventStep);
-			//findPath(adventRow, adventCol, goldRow, goldCol,adventStep,monsterRow,monsterCol);
+			findPath(adventRow, adventCol, goldRow, goldCol,adventStep,monsterRow,monsterCol);
 		}
 	}
 
 	private void findPath(int adventRow, int adventCol, int goldRow, int goldCol, int step, int monsterRow, int monsterCol) {
+		System.out.print("Path:");
 		for(int i=0;i<step;i++) {
-			System.out.print("Path:("+adventRow+","+adventCol+")->");
-			if((adventRow!= monsterRow) && (adventCol!=monsterCol)) {
-				if(adventRow<goldRow) {
-					adventRow++;
-				}else if(monsterRow<goldRow) {
-					monsterRow--;
-				}
-				if(adventCol>goldCol) {
-					adventCol--;
-				}else if(monsterCol>goldCol) {
-					monsterCol++;
-				}
-				
-			}else {
-				if(adventRow>goldRow){
-					adventRow--;
-				}else if(monsterRow>goldRow) {
-					monsterRow--;
-				}
-				if(adventCol<goldCol) {
-					adventCol++;
-					
-				}else if( monsterCol<goldCol) {
-					monsterCol--;
-				}
-			}
+			System.out.print("("+adventRow+","+adventCol+")->");
 			
+			 // Move the adventurer towards the gold cell
+	        if (adventRow != goldRow || adventCol != goldCol) {
+	            if (adventRow != goldRow) {
+	                adventRow += (adventRow < goldRow) ? 1 : -1;
+	            }
+	            if (adventCol != goldCol) {
+	                adventCol += (adventCol < goldCol) ? 1 : -1;
+	            }
+	        } else {
+	            // The adventurer has reached the gold cell
+	            // Move the monster towards the gold cell
+	            if (monsterRow != goldRow || monsterCol != goldCol) {
+	                if (monsterRow != goldRow) {
+	                    monsterRow += (monsterRow < goldRow) ? 1 : -1;
+	                }
+	                if (monsterCol != goldCol) {
+	                    monsterCol += (monsterCol < goldCol) ? 1 : -1;
+	                }
+	            }
+	        }
 		}
 	}
 }
