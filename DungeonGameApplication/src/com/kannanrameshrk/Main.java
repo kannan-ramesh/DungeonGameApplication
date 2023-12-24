@@ -1,5 +1,6 @@
 package com.kannanrameshrk;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -12,9 +13,9 @@ public class Main {
 		System.out.println("ENter Col:");
 		int col = input.nextInt();
 
-		main.startGame(row, col, input);
+		//main.startGame(row, col, input);
 		Pits pit=new Pits();
-		//pit.startGame(row,col,input);
+		pit.startGame(row,col,input);
 	}
 
 	private void startGame(int row, int col, Scanner input) {
@@ -79,30 +80,35 @@ public class Main {
 	}
 
 	private void findPath(int adventRow, int adventCol, int goldRow, int goldCol, int step, int monsterRow, int monsterCol) {
-		System.out.print("Path:");
-		for(int i=0;i<step;i++) {
-			System.out.print("("+adventRow+","+adventCol+")->");
-			
-			 // Move the adventurer towards the gold cell
-	        if (adventRow != goldRow || adventCol != goldCol) {
-	            if (adventRow != goldRow) {
-	                adventRow += (adventRow < goldRow) ? 1 : -1;
-	            }
-	            if (adventCol != goldCol) {
-	                adventCol += (adventCol < goldCol) ? 1 : -1;
-	            }
-	        } else {
-	            // The adventurer has reached the gold cell
-	            // Move the monster towards the gold cell
-	            if (monsterRow != goldRow || monsterCol != goldCol) {
-	                if (monsterRow != goldRow) {
-	                    monsterRow += (monsterRow < goldRow) ? 1 : -1;
-	                }
-	                if (monsterCol != goldCol) {
-	                    monsterCol += (monsterCol < goldCol) ? 1 : -1;
-	                }
-	            }
-	        }
-		}
+		 ArrayList<String> path = new ArrayList<>();
+		    path.add("(" + adventRow + "," + adventCol + ")");
+
+		    for (int i = 0; i < step; i++) {
+		        if (adventRow != goldRow || adventCol != goldCol) {
+		            if (adventRow != goldRow) {
+		            	 if (adventRow < goldRow) {
+		                     adventRow++;
+		                 } else {
+		                     adventRow--;
+		                 }
+		            }
+		            if (adventCol != goldCol) {
+		            	 if (adventCol < goldCol) {
+		                     adventCol++;
+		                 } else {
+		                     adventCol--;
+		                 }
+		            }
+		            path.add("(" + adventRow + "," + adventCol + ")");
+		        } else {
+		            break;
+		        }
+		    }
+
+		    path.set(path.size() - 1, "(" + goldRow + "," + goldCol + ")");
+
+		    for (String pos : path) {
+		        System.out.print(pos + "->");
+		    }
 	}
 }
