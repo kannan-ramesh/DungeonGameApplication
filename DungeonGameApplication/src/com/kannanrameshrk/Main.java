@@ -42,14 +42,17 @@ public class Main {
 		int goldCol = input.nextInt();
 		arr[goldRow - 1][goldCol - 1] = 'G';
 
-		int adventstep = Math.abs(adventRow - goldRow) + Math.abs(adventCol - goldCol);
-		int monsterStep = Math.abs(monsterRow - goldRow) + Math.abs(monsterCol - goldCol);
-		int triggerStep=Math.abs(adventRow-triggerRow)+Math.abs(adventCol-triggerCol);
-		int triggerStepGold=Math.abs(triggerRow-goldRow)+Math.abs(triggerCol-goldCol);
+		int adventstep =stepOfPath(adventRow,adventCol,goldRow,goldCol);
+		int monsterStep = stepOfPath(monsterRow,monsterRow,goldRow,goldCol);
+		int triggerStep=stepOfPath(adventRow,adventCol,triggerRow,triggerCol);
+		int triggerStepGold=stepOfPath(triggerRow,triggerCol,goldRow,goldCol);
 		
 		printArray(arr);
 
 		resultGame(adventstep, monsterStep,adventRow,adventCol, monsterRow, monsterCol,goldRow,goldCol,triggerRow,triggerCol,triggerStep,triggerStepGold);
+	}
+	private int stepOfPath(int monsterRow, int monsterCol, int goldRow, int goldCol) {
+		return  Math.abs(monsterRow - goldRow) + Math.abs(monsterCol - goldCol);
 	}
 
 	private void fillArray(char[][] arr) {

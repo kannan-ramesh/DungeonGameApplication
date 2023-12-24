@@ -18,6 +18,11 @@ public class Pits {
 		int monsterCol = input.nextInt();
 		arr[monsterRow - 1][monsterCol - 1] = 'M';
 		
+		System.out.println("Position Of trigger:");
+		int triggerRow = input.nextInt();
+		int triggerCol = input.nextInt();
+		arr[triggerRow - 1][triggerCol - 1] = 'T';
+		
 		System.out.println("Position Of Gold:");
 		int goldRow = input.nextInt();
 		int goldCol = input.nextInt();
@@ -36,7 +41,10 @@ public class Pits {
 		}
 		
 		printArray(arr);
-		int monsterStep=monsterToGold(monsterRow,monsterCol,goldRow,goldCol);
+		int monsterStep=stepOfPath(monsterRow,monsterCol,goldRow,goldCol);
+		int triggerStep=findMinSteps(arr,adventRow-1,adventCol-1,triggerRow-1,triggerCol-1);
+		int triggerStepGold=findMinSteps(arr,triggerRow-1,triggerCol-1,goldRow-1,goldCol-1);
+		
 		
 		 int minSteps = findMinSteps(arr, adventRow - 1, adventCol - 1, goldRow - 1, goldCol - 1);
 	        if (minSteps == step) {
@@ -45,13 +53,10 @@ public class Pits {
 	        	if(monsterStep>minSteps) {
 	        		System.out.println("Min number of steps: " + minSteps);
 	        	}else {
-	        		 System.out.println("No Possible Solution..");
+	        		 int steps=triggerStep+triggerStepGold;
+	 	            System.out.println("Minimum number of steps:"+steps);
 	        	}
 	        }
-	}
-
-	private int monsterToGold(int monsterRow, int monsterCol, int goldRow, int goldCol) {
-		return  Math.abs(monsterRow - goldRow) + Math.abs(monsterCol - goldCol);
 	}
 
 	private int findMinSteps(char[][] arr, int curRow, int curCol, int goldRow, int goldCol) {
@@ -81,6 +86,9 @@ public class Pits {
             minSteps++;
         }
         return minSteps;
+	}
+	private int stepOfPath(int monsterRow, int monsterCol, int goldRow, int goldCol) {
+		return  Math.abs(monsterRow - goldRow) + Math.abs(monsterCol - goldCol);
 	}
 
 	private void printArray(char[][] arr) {
